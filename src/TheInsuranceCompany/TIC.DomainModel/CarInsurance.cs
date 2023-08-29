@@ -1,4 +1,6 @@
-﻿namespace TIC.DomainModel
+﻿using System.Xml.Linq;
+
+namespace TIC.DomainModel
 {
     public class CarInsurance : Insurance
     {

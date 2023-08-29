@@ -1,6 +1,6 @@
-﻿
-namespace TIC.WebAPI.Models.Requests
+﻿namespace TIC.WebAPI.Models.Requests
 {
+    [Serializable]
     public class AddInsuranceRequest
     {
         public TravelInsurance? TravelInsurance { get; set; }

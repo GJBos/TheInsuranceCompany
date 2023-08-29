@@ -8,5 +8,10 @@ namespace TIC.WebAPI.Mappers.Impl
         {
             return new DomainModel.Request.GetInsurancesRequest();
         }
+
+        public DomainModel.Request.GetDutchTravelInsurancesRequest Map(GetDutchTravelInsurancesRequest request)
+        {
+            return new DomainModel.Request.GetDutchTravelInsurancesRequest();
+        }
     }
 }

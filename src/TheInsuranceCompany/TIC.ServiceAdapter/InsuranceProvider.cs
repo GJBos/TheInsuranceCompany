@@ -12,7 +12,13 @@ namespace TIC.ServiceAdapter
     {
         public void AddInsurance(DomainModel.Insurance insurance)
         {
-            DatabaseStub.Add(new LiabilityInsurance());
+            CarInsurance carInsurance = new ()
+            {
+                Name = insurance.Name,
+                Description = insurance.Description,
+                InsurancePremium = insurance.InsurancePremium,
+            };
+            DatabaseStub.Add(carInsurance);
         }
 
         public IEnumerable<DomainModel.Insurance> GetInsurances()

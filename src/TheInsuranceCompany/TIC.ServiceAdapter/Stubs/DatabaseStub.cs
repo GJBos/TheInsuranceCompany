@@ -21,7 +21,7 @@ namespace TIC.ServiceAdapter.Stubs
                 },
                 new TravelInsurance
                 {
-                    Name = "Best Travel Insurance",
+                    Name = "Beste Reis Verzekering",
                     Coverage = new List<Country>
                     {
                         new()

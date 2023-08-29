@@ -14,18 +14,21 @@ namespace TIC.WebAPI.Controllers
         private readonly IInsuranceDomain _insuranceDomain;
         private readonly IGetInsurancesRequestMapper _getInsurancesRequestMapper;
         private readonly IGetInsurancesResponseMapper _getInsurancesResponseMapper;
+        private readonly IGetDutchTravelInsurancesResponseMapper _getDutchTravelInsurancesResponseMapper;
         private readonly IAddInsuranceRequestMapper _addInsuranceRequestMapper;
 
         public InsuranceController(ILogger<InsuranceController> logger, 
             IInsuranceDomain insuranceDomain, 
             IGetInsurancesRequestMapper getInsurancesRequestMapper, 
-            IGetInsurancesResponseMapper getInsurancesResponseMapper, 
+            IGetInsurancesResponseMapper getInsurancesResponseMapper,
+            IGetDutchTravelInsurancesResponseMapper getDutchTravelInsurancesResponseMapper,
             IAddInsuranceRequestMapper addInsuranceRequestMapper)
         {
             _logger = logger;
             _insuranceDomain = insuranceDomain;
             _getInsurancesRequestMapper = getInsurancesRequestMapper;
             _getInsurancesResponseMapper = getInsurancesResponseMapper;
+            _getDutchTravelInsurancesResponseMapper = getDutchTravelInsurancesResponseMapper;
             _addInsuranceRequestMapper = addInsuranceRequestMapper;
         }
 
@@ -37,6 +40,23 @@ namespace TIC.WebAPI.Controllers
                 var domainRequest = _getInsurancesRequestMapper.Map(request);
                 var insurances = _insuranceDomain.GetInsurances(domainRequest);
                 var mappedResponse = _getInsurancesResponseMapper.Map(insurances);
+                return mappedResponse;
+            }
+            catch (Exception exception)
+            {
+                _logger.Log(LogLevel.Error, exception, exception.Message);
+                throw;
+            }
+        }
+
+        [HttpPost(Name = "GetDutchTravelInsurances")]
+        public GetDutchTravelInsurancesResponse GetDutchTravelInsurances(GetDutchTravelInsurancesRequest request)
+        {
+            try
+            {
+                var domainRequest = _getInsurancesRequestMapper.Map(request);
+                var insurances = _insuranceDomain.GetDutchTravelInsurances(domainRequest);
+                var mappedResponse = _getDutchTravelInsurancesResponseMapper.Map(insurances);
                 return mappedResponse;
             }
             catch (Exception exception)

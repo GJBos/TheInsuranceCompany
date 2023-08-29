@@ -59,10 +59,8 @@ namespace TIC.WebAPI.Mappers.Impl
             {
                 Name = insurance.Name,
                 Description = insurance.Description,
-                InsurancePremium = insurance.InsurancePremium,
-                InsuredAmount = insurance.InsuredAmount,
-                Excess = insurance.Excess,
-                ExcessAmount = insurance.ExcessAmount
+                InsurancePremium = insurance.InsurancePremium,  
+                InsuredAmount = insurance.InsuredAmount
             };
         }
     }

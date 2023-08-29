@@ -61,8 +61,62 @@ namespace TIC.DomainAPI.UnitTests
                 }
             };
 
+
             // Act
             var actual = _domain.GetInsurances(request);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [TestMethod]
+        public void GetDutchTravelInsurances()
+        {
+            // Arrange
+            var request = new GetDutchTravelInsurancesRequest();
+            var getDutchTravelInsurancesResponse = new List<TravelInsurance>
+            {
+                new TravelInsurance
+                {
+                    Name = "Nederlandse reisverzekering",
+                    Description = "De echte NL reisverzekering",
+                    Coverage = new List<Country>
+                    {
+                        new()
+                        {
+                            Code = "NL",
+                            Name = "Netherlands"
+                        }
+                    },
+                    InsurancePremium = 50,
+                    InsuredAmount = 1200
+                }
+            };
+
+            _providerMock.Setup(x => x.GetInsurances()).Returns(getDutchTravelInsurancesResponse);
+
+            var expectedResponse = new List<TravelInsurance>
+            {
+                new TravelInsurance
+                {
+                    Name = "Nederlandse reisverzekering",
+                    Description = "De echte NL reisverzekering",
+                    Coverage = new List<Country>
+                    {
+                        new()
+                        {
+                            Code = "NL",
+                            Name = "Netherlands"
+                        }
+                    },
+                    InsurancePremium = 50,
+                    InsuredAmount = 1200
+                }
+            };
+
+
+            // Act
+            var actual = _domain.GetDutchTravelInsurances(request);
 
             // Assert
             actual.Should().BeEquivalentTo(expectedResponse);
