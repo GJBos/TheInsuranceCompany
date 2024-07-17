@@ -1,4 +1,5 @@
-﻿using TIC.ServiceAdapter.Models;
+﻿using System.Collections.Generic;
+using TIC.ServiceAdapter.Models;
 
 namespace TIC.ServiceAdapter.Mappers
 {
@@ -69,5 +70,18 @@ namespace TIC.ServiceAdapter.Mappers
                 ExcessAmount = insurance.ExcessAmount
             };
         }
+        public static IEnumerable<DomainModel.TravelInsurance> GetDutchTravelInsurances(this IEnumerable<Insurance> insurances)
+        {
+
+            return insurances
+            .OfType<TravelInsurance>()
+            .Select(t=> Map(t))
+            .Where(t => t.Coverage is not null && t.Coverage.Any(c => c.Code == "NL"))
+            .ToList();
+
+        }
+
+
+
     }
 }
