@@ -28,9 +28,9 @@ namespace TIC.WebAPI.Mappers.Impl
             return new DomainModel.CarInsurance
             {
                 Name = insurance.Name,
-                Description = insurance.Name,
+                Description = insurance.Description,
                 InsurancePremium = insurance.InsurancePremium,
-                LicensePlate = insurance.Name,
+                LicensePlate = insurance.LicensePlate,
                 WeightInKg = insurance.WeightInKg,
                 DateOfBirth = insurance.DateOfBirth
             };

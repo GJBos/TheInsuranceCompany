@@ -8,5 +8,5 @@ public interface IInsuranceDomain
     IEnumerable<Insurance> GetInsurances(GetInsurancesRequest getInsurancesRequest);
     void AddInsurance(Insurance insurance);
 
-    IEnumerable<TravelInsurance> GetDutchTravelInsurances();
+    IEnumerable<TravelInsurance> GetDutchTravelInsurances(GetDutchTravelInsurance getDutchTravelInsurance);
 }

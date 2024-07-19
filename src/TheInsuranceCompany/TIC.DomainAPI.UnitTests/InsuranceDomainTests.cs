@@ -5,6 +5,7 @@ using TIC.DomainAPI.Impl;
 using TIC.DomainModel;
 using TIC.DomainModel.Request;
 using TIC.ServiceAdapter;
+using TIC.ServiceAdapter.Services;
 #pragma warning disable CS8618
 
 namespace TIC.DomainAPI.UnitTests
@@ -14,18 +15,21 @@ namespace TIC.DomainAPI.UnitTests
     {
         private IInsuranceDomain _domain;
         private Mock<IInsuranceProvider> _providerMock;
+        private Mock<IGetDutchTravelInsurances> _getDutchTravelInsurancesMock;
 
         [TestInitialize]
         public void Initialize()
         {
             _providerMock = new Mock<IInsuranceProvider>(MockBehavior.Strict);
-            _domain = new InsuranceDomain(_providerMock.Object);
+            _getDutchTravelInsurancesMock = new Mock<IGetDutchTravelInsurances>(MockBehavior.Strict);
+            _domain = new InsuranceDomain(_providerMock.Object, _getDutchTravelInsurancesMock.Object);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
             _providerMock.VerifyAll();
+            _getDutchTravelInsurancesMock.VerifyAll();
         }
 
         [TestMethod]
@@ -65,6 +69,97 @@ namespace TIC.DomainAPI.UnitTests
             var actual = _domain.GetInsurances(request);
 
             // Assert
+            actual.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [TestMethod]
+        public void GetDutchTravelInsurances()
+        {
+            //Arrange
+            var request = new GetDutchTravelInsurance();
+            var getDutchTravelInsuranceResponse = new List<TravelInsurance>
+            {
+                new TravelInsurance
+                {
+                    Name = "Dutch Travel Insurance",
+                    Description = "DT Insurance",
+                    InsurancePremium = 20,
+                    InsuredAmount = 6000,
+                    Coverage = new List<Country>
+                    {
+                        new Country {Code="NL", Name="Netherlands"}
+                    }                    
+                }
+            };
+
+            _getDutchTravelInsurancesMock.Setup(i => i.GetDutchTravelInsurancesList()).Returns(getDutchTravelInsuranceResponse);
+
+            var expectedResponse = new List<TravelInsurance>
+            {
+
+                new TravelInsurance
+                {
+                    Name = "Dutch Travel Insurance",
+                    Description = "DT Insurance",
+                    InsurancePremium = 20,
+                    InsuredAmount = 6000,
+                    Coverage = new List<Country>
+                    {
+                        new Country {Code="NL", Name="Netherlands"}
+                    }
+                }
+            };
+
+            //Act
+            var actual = _domain.GetDutchTravelInsurances(request);
+
+            //Assert
+            actual.Should().BeEquivalentTo(expectedResponse);
+        }
+
+
+        [TestMethod]
+        public void GetDutchTravelInsurances_ReturnEmpty_WhenNoDutchTravelInsurances()
+        {
+            //Arrange
+            var request = new GetDutchTravelInsurance();
+            var getDutchTravelInsuranceResponse = new List<TravelInsurance>
+            {
+                new TravelInsurance
+                {
+                    Name = "Dutch Travel Insurance",
+                    Description = "DT Insurance",
+                    InsurancePremium = 20,
+                    InsuredAmount = 6000,
+                    Coverage = new List<Country>
+                    {
+                        new Country {Code="LV", Name="Latvia"}
+                    }
+                }
+            };
+
+            _getDutchTravelInsurancesMock.Setup(i => i.GetDutchTravelInsurancesList()).Returns(getDutchTravelInsuranceResponse);
+
+            var expectedResponse = new List<TravelInsurance>
+            {
+
+                new TravelInsurance
+                {
+                    Name = "Dutch Travel Insurance",
+                    Description = "DT Insurance",
+                    InsurancePremium = 20,
+                    InsuredAmount = 6000,
+                    Coverage = new List<Country>
+                    {
+                        new Country {Code="LV", Name="Latvia"}
+                    }
+                }
+            };
+
+            //Act
+            var actual = _domain.GetDutchTravelInsurances(request);
+
+            //Assert
             actual.Should().BeEquivalentTo(expectedResponse);
         }
     }

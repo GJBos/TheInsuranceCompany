@@ -15,18 +15,24 @@ namespace TIC.WebAPI.Controllers
         private readonly IGetInsurancesRequestMapper _getInsurancesRequestMapper;
         private readonly IGetInsurancesResponseMapper _getInsurancesResponseMapper;
         private readonly IAddInsuranceRequestMapper _addInsuranceRequestMapper;
+        private readonly IGetDutchTravelInsuranceRequestMapper _getDutchTravelInsuranceRequestMapper;
+        private readonly IGetDutchTravelInsurancesResponseMapper _getDutchTravelInsurancesResponseMapper;
 
         public InsuranceController(ILogger<InsuranceController> logger, 
             IInsuranceDomain insuranceDomain, 
             IGetInsurancesRequestMapper getInsurancesRequestMapper, 
             IGetInsurancesResponseMapper getInsurancesResponseMapper, 
-            IAddInsuranceRequestMapper addInsuranceRequestMapper)
+            IAddInsuranceRequestMapper addInsuranceRequestMapper,
+            IGetDutchTravelInsuranceRequestMapper getDutchTravelInsuranceRequestMapper,
+            IGetDutchTravelInsurancesResponseMapper getDutchTravelInsurancesResponseMapper)
         {
             _logger = logger;
             _insuranceDomain = insuranceDomain;
             _getInsurancesRequestMapper = getInsurancesRequestMapper;
             _getInsurancesResponseMapper = getInsurancesResponseMapper;
             _addInsuranceRequestMapper = addInsuranceRequestMapper;
+            _getDutchTravelInsuranceRequestMapper = getDutchTravelInsuranceRequestMapper;
+            _getDutchTravelInsurancesResponseMapper = getDutchTravelInsurancesResponseMapper;
         }
 
         [HttpPost(Name = "GetInsurances")]
@@ -53,6 +59,23 @@ namespace TIC.WebAPI.Controllers
             {
                 var domainRequest = _addInsuranceRequestMapper.Map(request);
                 _insuranceDomain.AddInsurance(domainRequest);
+            }
+            catch (Exception exception)
+            {
+                _logger.Log(LogLevel.Error, exception, exception.Message);
+                throw;
+            }
+        }
+
+        [HttpPost(Name = "GetDutchTravelInsurances")]
+        public IEnumerable<GetDutchTravelInsurancesResponse> GetDutchTravelInsurances(GetDutchTravelInsuranceRequest request)
+        {
+            try
+            {
+                var domainRequest = _getDutchTravelInsuranceRequestMapper.Map(request);
+                var dutchTravelInsurances = _insuranceDomain.GetDutchTravelInsurances(domainRequest);
+                var mappedResponse = _getDutchTravelInsurancesResponseMapper.Map(dutchTravelInsurances);
+                return mappedResponse;
             }
             catch (Exception exception)
             {

@@ -1,6 +1,7 @@
 using System.Reflection;
 using TIC.DomainAPI;
 using TIC.ServiceAdapter;
+using TIC.ServiceAdapter.Services;
 using TIC.WebAPI.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 //var assemblies =  Directory.GetFiles(path, "TIC*.dll").Select(Assembly.LoadFile).ToList();
 builder.Services.Scan(scan => scan.FromAssemblyOf<IInsuranceDomain>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
 builder.Services.Scan(scan => scan.FromAssemblyOf<IInsuranceProvider>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
+builder.Services.Scan(scan => scan.FromAssemblyOf<IGetDutchTravelInsurances>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
 builder.Services.Scan(scan => scan.FromAssemblyOf<IAddInsuranceRequestMapper>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
 
 var app = builder.Build();
