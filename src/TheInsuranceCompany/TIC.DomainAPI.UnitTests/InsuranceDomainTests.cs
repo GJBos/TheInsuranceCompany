@@ -67,5 +67,66 @@ namespace TIC.DomainAPI.UnitTests
             // Assert
             actual.Should().BeEquivalentTo(expectedResponse);
         }
+
+        [TestMethod]
+        public void GetTravelInsurances()
+        {
+            // Arrange
+            var request = new GetInsurancesRequest();
+            var getInsurancesResponse = new List<Insurance>
+            {
+                new CarInsurance
+                {
+                    Name = "Best Car Insurance",
+                    Description = "Covers anything and everything",
+                    DateOfBirth = new DateTime(1993, 10, 13),
+                    InsurancePremium = 50m,
+                    LicensePlate = "HF-430-V",
+                    WeightInKg = 1100
+                },
+                new TravelInsurance
+                {
+                    Name = "Best Travel Insurance",
+                    Coverage = new List<Country>
+                    {
+                        new()
+                        {
+                            Code = "NL",
+                            Name = "Netherlands"
+                        }
+                    },
+                    Description = "Insured whilst on the move",
+                    InsurancePremium = 20,
+                    InsuredAmount = 7000
+                }
+            };
+
+            _providerMock.Setup(x => x.GetInsurances()).Returns(getInsurancesResponse);
+
+            var expectedResponse = new List<Insurance>
+            {
+                new TravelInsurance
+                {
+                    Name = "Best Travel Insurance",
+                    Coverage = new List<Country>
+                    {
+                        new()
+                        {
+                            Code = "NL",
+                            Name = "Netherlands"
+                        }
+                    },
+                    Description = "Insured whilst on the move",
+                    InsurancePremium = 20,
+                    InsuredAmount = 7000
+                }
+            };
+
+            // Act
+            var actual = _domain.GetDutchTravelInsurances();
+
+            // Assert
+            actual.Should().BeEquivalentTo(expectedResponse);
+        }
     }
 }

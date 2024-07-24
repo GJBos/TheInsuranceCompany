@@ -17,6 +17,9 @@ var path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 builder.Services.Scan(scan => scan.FromAssemblyOf<IInsuranceDomain>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
 builder.Services.Scan(scan => scan.FromAssemblyOf<IInsuranceProvider>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
 builder.Services.Scan(scan => scan.FromAssemblyOf<IAddInsuranceRequestMapper>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
+builder.Services.Scan(scan => scan.FromAssemblyOf<IGetDutchTravelInsurancesResponseMapper>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
+builder.Services.Scan(scan => scan.FromAssemblyOf<IGetInsurancesRequestMapper>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
+builder.Services.Scan(scan => scan.FromAssemblyOf<IGetInsurancesResponseMapper>().AddClasses().AsImplementedInterfaces().WithTransientLifetime());
 
 var app = builder.Build();
 
