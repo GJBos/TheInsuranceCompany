@@ -27,6 +27,16 @@ namespace TIC.ServiceAdapter.Mappers
             throw new NotImplementedException();
         }
 
+        public static IEnumerable<DomainModel.TravelInsurance>? GetDutchTravelInsurances(this IEnumerable<Insurance> insurances)
+        {
+            var travelInsurances = insurances.OfType<TravelInsurance>();
+            var mappedInsurances = travelInsurances.Select(x => Map(x));
+            var validInsurances = mappedInsurances
+                .Where(x => x.Coverage != null && x.Coverage.Any(y => y.Code == "NL"))
+                .ToList();
+            return validInsurances;
+        }
+
         private static DomainModel.CarInsurance Map(CarInsurance insurance)
         {
             return new DomainModel.CarInsurance

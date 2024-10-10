@@ -45,7 +45,7 @@ namespace TIC.DomainAPI.UnitTests
                     WeightInKg = 1100
                 }
             };
-            
+
             _providerMock.Setup(x => x.GetInsurances()).Returns(getInsurancesResponse);
 
             var expectedResponse = new List<Insurance>
@@ -63,6 +63,30 @@ namespace TIC.DomainAPI.UnitTests
 
             // Act
             var actual = _domain.GetInsurances(request);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expectedResponse);
+        }
+
+        [TestMethod]
+        public void GetDutchTravelInsurances()
+        {
+            // Arrange
+            var expectedResponse = new List<TravelInsurance>
+            {
+                 new TravelInsurance
+                 {
+                     Name = "Best Car Insurance",
+                     Description = "Insured whilst on the move",
+                     InsurancePremium = 20,
+                     InsuredAmount = 7000
+                 }
+             };
+
+            _providerMock.Setup(x => x.GetDutchTravelInsurances()).Returns(expectedResponse);
+
+            // Act
+            var actual = _domain.GetDutchTravelInsurances();
 
             // Assert
             actual.Should().BeEquivalentTo(expectedResponse);

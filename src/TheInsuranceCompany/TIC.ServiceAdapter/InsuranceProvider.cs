@@ -20,5 +20,11 @@ namespace TIC.ServiceAdapter
             var insurances = DatabaseStub.GetAllInsurances();
             return insurances.Map();
         }
+
+        public IEnumerable<DomainModel.TravelInsurance> GetDutchTravelInsurances()
+        {
+            var insurances = DatabaseStub.GetAllInsurances();
+            return insurances.GetDutchTravelInsurances();
+        }
     }
 }
