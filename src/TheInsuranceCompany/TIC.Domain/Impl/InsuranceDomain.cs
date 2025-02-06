@@ -22,5 +22,12 @@ namespace TIC.DomainAPI.Impl
         {
             _insuranceProvider.AddInsurance(insurance);
         }
+        public IEnumerable<TravelInsurance> GetDutchTravelInsurances()
+        {
+            return _insuranceProvider.GetInsurances()
+        .OfType<TravelInsurance>() 
+        .Where(i => i.Coverage != null && i.Coverage.Any(c => c.Code == "NL"))
+        .ToList();
+        }
     }
 }
