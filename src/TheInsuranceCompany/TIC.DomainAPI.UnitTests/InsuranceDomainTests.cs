@@ -29,6 +29,28 @@ namespace TIC.DomainAPI.UnitTests
         }
 
         [TestMethod]
+        public void GetDutchTravelInsurances_ReturnsOnlyDutchCoverage()
+        {
+            // Arrange
+            var testInsurances = new List<Insurance>
+            {
+             new TravelInsurance { Name = "Global Travel Insurance", Coverage = new List<Country> { new Country { Code = "NL" } }, InsurancePremium = 200, InsuredAmount = 10000 },
+        new TravelInsurance { Name = "European Travel Insurance", Coverage = new List<Country> { new Country { Code = "FR" } }, InsurancePremium = 150, InsuredAmount = 5000 },
+        new CarInsurance { Name = "Car Insurance", InsurancePremium = 500 }
+            };
+
+            _providerMock.Setup(x => x.GetInsurances()).Returns(testInsurances);
+
+            // Act
+            var result = _domain.GetDutchTravelInsurances().ToList();
+
+            // Assert
+            result.Should().HaveCount(1);
+            result.First().Name.Should().Be("Global Travel Insurance");
+        }
+    
+
+        [TestMethod]
         public void GetInsurances()
         {
             // Arrange

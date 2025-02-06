@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TIC.DomainAPI;
+using TIC.ServiceAdapter.Models;
 using TIC.WebAPI.Mappers;
 using TIC.WebAPI.Models.Requests;
 using TIC.WebAPI.Models.Responses;
@@ -60,5 +61,21 @@ namespace TIC.WebAPI.Controllers
                 throw;
             }
         }
-    }
+        [HttpGet("GetDutchTravelInsurances")]
+        public IActionResult GetDutchTravelInsurances()
+        {
+            var insurances = _insuranceDomain.GetDutchTravelInsurances()
+                .Select(i => new TravelInsuranceDto
+                {
+                    Name = i.Name,
+                    Description = i.Description,
+                    InsurancePremium = i.InsurancePremium,
+                    InsuredAmount = i.InsuredAmount 
+                });
+
+            return Ok(insurances);
+        }
+    
+
+}
 }
